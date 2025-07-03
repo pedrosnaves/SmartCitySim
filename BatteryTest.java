@@ -1,9 +1,7 @@
 package br.pedro.smartgrid;
 
-/**
- * Teste rápido usando asserções nativas do Java (`assert`).
- * Rode com:  java -ea br.pedro.smartgrid.BatteryTest
- */
+// Classe de testes para a bateria
+
 public class BatteryTest {
 
     private static Battery novaBateria(double capacidadeKWh) {
@@ -11,7 +9,7 @@ public class BatteryTest {
     }
 
     public static void main(String[] args) {
-        /* 1. Não ultrapassa capacidade */
+       
         {
             Battery bat = novaBateria(3.0);
             double aceito = bat.charge(5.0);
@@ -19,7 +17,7 @@ public class BatteryTest {
             assert bat.getStoredEnergy() == 3.0 : "SOC errado após carga";
         }
 
-        /* 2. Não fornece mais do que tem */
+        
         {
             Battery bat = novaBateria(3.0);
             bat.charge(2.0);
@@ -28,12 +26,12 @@ public class BatteryTest {
             assert bat.getStoredEnergy() == 0.0 : "SOC deveria ser 0";
         }
 
-        /* 3. SOC reportado corretamente */
+       
         {
             Battery bat = novaBateria(4.0);
-            bat.charge(1.0);                   // 25 %
+            bat.charge(1.0);                   
             assert Math.abs(bat.getStateOfCharge() - 0.25) < 1e-6;
-            bat.charge(1.0);                   // 50 %
+            bat.charge(1.0);                  
             assert Math.abs(bat.getStateOfCharge() - 0.50) < 1e-6;
         }
 
