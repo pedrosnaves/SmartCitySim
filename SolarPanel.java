@@ -1,9 +1,6 @@
 package br.pedro.smartgrid;
 
-/**
- * Folha do Composite: gera energia a partir da irradiância solar.
- * Compartilha suas especificações via Flyweight (DeviceFactory.DeviceSpecs).
- */
+// Classe folha do Composite, implementando EnergyComponent
 public class SolarPanel implements EnergyComponent {
 
     private final DeviceFactory.DeviceSpecs specs;
