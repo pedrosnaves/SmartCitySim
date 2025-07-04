@@ -5,14 +5,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * Factory Method + Flyweight.
- * Lê devices.csv, cria componentes e reaproveita DeviceSpecs idênticos.
- */
+// Nesta classe, faremos o uso em combinação dos métodos Factory Method, Flyweight e Composite
+
+
 public class DeviceFactory {
 
-    /** Flyweight imutável contendo especificações de um dispositivo. */
-    public static final class DeviceSpecs {
+    
+    public static final class DeviceSpecs { // Flyweight imutável contendo especificações dos dispositivos
         final double area;          // m² (apenas painéis)
         final double efficiency;    // [0-1] (apenas painéis)
         final double capacity;      // kWh   (apenas baterias)
@@ -27,27 +26,27 @@ public class DeviceFactory {
     @SuppressWarnings("unused")
     private static DeviceSpecs getOrCreate(String key, double area,
                                            double eff, double cap) {
-        return CACHE.computeIfAbsent(key,
+        return CACHE.computeIfAbsent(key,                // Cria uma única instância por chave - core do Flyweight
         ignored -> new DeviceSpecs(area, eff, cap));
     }
 
-    /** Lê um arquivo CSV muito simples e devolve um Composite pronto. */
+    // Factory Method -> decodifica um arquivo csv e devolve o Composite pronto
     public static CompositeEnergyUnit loadGridFromCsv(Path csvPath) throws IOException {
-        CompositeEnergyUnit root = new CompositeEnergyUnit();
-        List<String> lines = Files.readAllLines(csvPath);
+        CompositeEnergyUnit root = new CompositeEnergyUnit(); // Nó-raiz do Composite
+        List<String> lines = Files.readAllLines(csvPath); // Uso dos métodos de leitura de arquivos (I/O)
 
         for (String line : lines) {
-            if (line.isBlank() || line.startsWith("#")) continue; // comentário
+            if (line.isBlank() || line.startsWith("#")) continue; 
             String[] parts = line.split(";");
             switch (parts[0].trim().toUpperCase()) {
-                case "SOLAR" -> {
+                case "SOLAR" -> {   // Constrói SolarPanel usando Flyweight specs e adiciona ao Composite
                     String model = parts[1].trim();
                     double area = Double.parseDouble(parts[2]);
                     double eff  = Double.parseDouble(parts[3]);
                     DeviceSpecs s = getOrCreate("SOLAR:" + model, area, eff, 0);
                     root.addComponent(new SolarPanel(s));
                 }
-                case "BATTERY" -> {
+                case "BATTERY" -> {  // Constrói Battery usando Flyweight specs e adiciona ao Composite
                     String model = parts[1].trim();
                     double cap   = Double.parseDouble(parts[2]);
                     DeviceSpecs s = getOrCreate("BAT:" + model, 0, 0, cap);
@@ -56,6 +55,6 @@ public class DeviceFactory {
                 default -> System.err.println("Linha ignorada: " + line);
             }
         }
-        return root;
+        return root; // Retorna árvore totalmente populada
     }
 }
