@@ -21,7 +21,7 @@ public class CompositeEnergyUnit implements EnergyComponent {
     }
 
    
-    public List<EnergyComponent> getChildren() { // Permite so SimulationManager percorrer a árvore e encontrar a primeira Battery
+    public List<EnergyComponent> getChildren() { // Permite so SimulationManager percorrer a árvore e encontrar os filhos. Rerotna a lista (Composite)
         return components;                
     }
 }
