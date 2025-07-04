@@ -1,6 +1,6 @@
 package br.pedro.smartgrid;
 
-/** Thread simples que avança a simulação a cada segundo. */
+// Thread simples que avança a simulação a cada segundo
 public class TickerThread extends Thread {
 
     private volatile boolean running = true;
