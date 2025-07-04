@@ -19,7 +19,7 @@ public class SmartGridApp {
 
             System.out.println("CSV que vou usar: " + csv.toAbsolutePath()); // Linha para imprimir o diretório absoluto do arquivo csv, para ser encontrado manualmente se necessário
 
-            /* ---------------------------------------------------------------- */
+          
             CompositeEnergyUnit grid = DeviceFactory.loadGridFromCsv(csv); // Carrega a estrutura Composite completa atravéz do Factory Method
             SimulationManager manager = SimulationManager.getInstance(); // Inicializa a simulação (Singleton), configurando-a com a árvore recém carregada
             manager.init(grid);
